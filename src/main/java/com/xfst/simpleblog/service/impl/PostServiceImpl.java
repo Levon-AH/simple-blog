@@ -113,7 +113,7 @@ public class PostServiceImpl implements PostService {
     }
 
     private PostDAO getById(final Long id) {
-        if (id == null) {
+        if (id == null || id <= 0) {
             log.warn("invalid id for post");
             throw new SimpleBlogException(ErrorCodes.ERROR_POST_INVALID_ID);
         }

@@ -21,11 +21,11 @@ public class AdminController {
     private final UserService userService;
     private final PostService postService;
 
-
     public AdminController(UserService userService, PostService postService) {
         this.userService = userService;
         this.postService = postService;
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable("id") final Long id) {
         UserDTO user = userService.findBy(id);

@@ -12,10 +12,11 @@ import com.xfst.simpleblog.service.data.PostDTO;
 import com.xfst.simpleblog.service.data.UserDTO;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -34,9 +35,9 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostCreateResponse> post(@RequestBody @Valid final PostCreateRequest request,
-                                                   Principal principal) {
+    public ResponseEntity<PostCreateResponse> post(@RequestBody @Valid final PostCreateRequest request) {
 
+        Authentication principal = SecurityContextHolder.getContext().getAuthentication();
         UserDTO user = userService.findBy(principal.getName());
         PostDTO postDto = createPostDto(request, user);
         PostDTO created = postService.create(postDto);
@@ -48,8 +49,8 @@ public class PostController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PostUpdateResponse> edit(@RequestBody @Valid final PostUpdateRequest request,
-                                                   @PathVariable("id") final Long id,
-                                                   Principal principal) {
+                                                   @PathVariable("id") final Long id) {
+        Authentication principal = SecurityContextHolder.getContext().getAuthentication();
         UserDTO user = userService.findBy(principal.getName());
         PostDTO postDto = createPostDto(request, user);
         postDto.setId(id);

@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserDAO getById(Long id) {
-        if (id == null) {
+        if (id == null || id <= 0) {
             log.warn("invalid id for user");
             throw new SimpleBlogException(ErrorCodes.ERROR_USER_INVALID_ID);
         }

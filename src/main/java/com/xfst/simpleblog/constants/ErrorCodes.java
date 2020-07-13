@@ -6,7 +6,7 @@ public enum ErrorCodes {
     ERROR_USER_NOT_FOUND             ("user not found", 404),
     ERROR_USER_INVALID_USERNAME      ("user not found", 400),
     ERROR_POST_INVALID_TITLE         ("bad post title", 400),
-    ERROR_POST_NOT_FOUND             ("bad post title", 400),
+    ERROR_POST_NOT_FOUND             ("post not found", 400),
     ERROR_POST_INVALID_ID            ("bad post id", 400);
 
     ErrorCodes(String message, int status) {
