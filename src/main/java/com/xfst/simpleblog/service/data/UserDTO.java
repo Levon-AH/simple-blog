@@ -12,5 +12,4 @@ public class UserDTO {
     private List<PostDTO> posts;
     private boolean active;
     private Date createdTime;
-    private Date deletedTime;
 }

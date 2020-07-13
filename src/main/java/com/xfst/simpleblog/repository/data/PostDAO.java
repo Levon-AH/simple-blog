@@ -8,10 +8,10 @@ import java.util.Date;
 public class PostDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "INT(16)")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, columnDefinition = "VARCHAR(50)")
     private String title;
 
     @Column(name = "text", nullable = false)

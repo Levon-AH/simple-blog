@@ -1,1 +1,17 @@
-
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog
+    username: root
+    password: root
+  liquibase:
+    change-log: classpath:liquibase/db.changelog-master.xml
+    url: jdbc:mysql://localhost:3306/blog
+    user: root
+    password: root
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+jwt:
+  token:
+    secret: secret
+    expired: 36000

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -45,6 +44,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO findBy(Long id) {
+        return UserMapper.map(getById(id));
+    }
+
+    @Override
     public UserDTO findBy(String username) {
         if (StringUtils.isEmpty(username)) {
             throw new SimpleBlogException("invalid username");
@@ -56,12 +60,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        if (id == null) {
-            throw new SimpleBlogException("invalid id");
-        }
+    public void blockBy(Long id) {
         UserDAO user = getById(id);
-        user.setDeletedTime(new Date());
         user.setActive(false);
         try {
             userRepository.save(user);
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
         if (id == null) {
             throw new SimpleBlogException();
         }
-        Optional<UserDAO> userDAO= userRepository.findById(id);
+        Optional<UserDAO> userDAO = userRepository.findById(id);
         return userDAO.orElseThrow(SimpleBlogException::new);
     }
 }

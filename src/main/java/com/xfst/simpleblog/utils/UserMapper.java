@@ -15,7 +15,6 @@ public class UserMapper {
        userDTO.setPosts(PostMapper.map(userDAO.getPosts()));
        userDTO.setUsername(userDAO.getUsername());
        userDTO.setCreatedTime(userDAO.getCreatedTime());
-       userDTO.setDeletedTime(userDAO.getDeletedTime());
        return userDTO;
     }
 

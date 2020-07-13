@@ -5,7 +5,9 @@ import com.xfst.simpleblog.service.data.UserDTO;
 public interface UserService {
     UserDTO create(final UserDTO user);
 
+    UserDTO findBy(final Long id);
+
     UserDTO findBy(final String username);
 
-    void deleteById(final Long id);
+    void blockBy(final Long id);
 }
