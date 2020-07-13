@@ -1,6 +1,6 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/blog
     username: root
     password: root
@@ -9,9 +9,12 @@ spring:
     url: jdbc:mysql://localhost:3306/blog
     user: root
     password: root
-  jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
 jwt:
   token:
     secret: secret
-    expired: 36000
+    expired: 3600000

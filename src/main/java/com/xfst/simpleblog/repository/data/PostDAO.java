@@ -88,4 +88,16 @@ public class PostDAO {
     public void setDeletedTime(Date deletedTime) {
         this.deletedTime = deletedTime;
     }
+
+    @Override
+    public String toString() {
+        return "PostDAO{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", createdTime=" + createdTime +
+                ", updatedTime=" + updatedTime +
+                ", deletedTime=" + deletedTime +
+                '}';
+    }
 }

@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<PostDAO, Long> {
     Optional<PostDAO> findByTitle(final String title);
 
-    Optional<List<PostDAO>> findAllByDeletedTimeIsNullOrDeletedTimeAfter(Date now);
+    Optional<List<PostDAO>> findAllByDeletedTimeIsNullOrDeletedTimeAfter(final Date now);
 }

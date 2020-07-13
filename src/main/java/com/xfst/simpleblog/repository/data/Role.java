@@ -1,7 +1,8 @@
 package com.xfst.simpleblog.repository.data;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -10,11 +11,11 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true, columnDefinition = "VARCHAR(50)")
+    @Column(name = "name", nullable = false, columnDefinition = "VARCHAR(50)")
     private String name;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private List<UserDAO> users;
+    private Set<UserDAO> users;
 
     public Long getId() {
         return id;
@@ -32,11 +33,26 @@ public class Role {
         this.name = name;
     }
 
-    public List<UserDAO> getUsers() {
+    public Set<UserDAO> getUsers() {
         return users;
     }
 
-    public void setUsers(List<UserDAO> users) {
+    public void setUsers(Set<UserDAO> users) {
         this.users = users;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return Objects.equals(id, role.id) &&
+                Objects.equals(name, role.name) &&
+                Objects.equals(users, role.users);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, users);
     }
 }

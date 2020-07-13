@@ -1,10 +1,15 @@
 package com.xfst.simpleblog.controller;
 
+import com.xfst.simpleblog.constants.RoleType;
 import com.xfst.simpleblog.controller.request.AuthenticationRequest;
+import com.xfst.simpleblog.controller.request.UserRegistrationRequest;
 import com.xfst.simpleblog.controller.response.AuthenticationResponse;
 import com.xfst.simpleblog.repository.UserRepository;
+import com.xfst.simpleblog.repository.data.Role;
 import com.xfst.simpleblog.repository.data.UserDAO;
 import com.xfst.simpleblog.security.jwt.JwtTokenProvider;
+import com.xfst.simpleblog.service.UserService;
+import com.xfst.simpleblog.service.data.UserDTO;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +22,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 @RestController
 @RequestMapping(value = "auth",
         consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -28,32 +38,38 @@ public class AuthenticationController {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     public AuthenticationController(AuthenticationManager authenticationManager,
                                     JwtTokenProvider jwtTokenProvider,
-                                    UserRepository userRepository
+                                    UserService userService
     ) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<AuthenticationResponse> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
-        final UserDAO userDetails = userRepository
-                .findByUsername(authenticationRequest.getUsername()).orElse(null);
+        final UserDTO userDetails = userService
+                .findBy(authenticationRequest.getUsername());
 
         if (userDetails == null) {
             throw new UsernameNotFoundException("User with username: " + authenticationRequest.getUsername() + " not found");
         }
 
-        final String token = jwtTokenProvider.createToken(userDetails.getUsername(), userDetails.getRoles());
+        final String token = jwtTokenProvider.createToken(userDetails.getUsername());
 
         return ResponseEntity.ok(new AuthenticationResponse(userDetails.getUsername(), token));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody UserRegistrationRequest request) {
+        UserDTO created = userService.create(from(request));
+        return ResponseEntity.ok(created);
     }
 
     private void authenticate(String username, String password) {
@@ -64,6 +80,17 @@ public class AuthenticationController {
         } catch (BadCredentialsException e) {
             throw new RuntimeException("INVALID_CREDENTIALS", e);
         }
+    }
+
+    private UserDTO from(final UserRegistrationRequest request) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setActive(true);
+        userDTO.setUsername(request.getUsername());
+        userDTO.setFirstName(request.getFirstName());
+        userDTO.setLastName(request.getLastName());
+        userDTO.setEmail(request.getEmail());
+        userDTO.setPassword(request.getPassword());
+        return userDTO;
     }
 }
 

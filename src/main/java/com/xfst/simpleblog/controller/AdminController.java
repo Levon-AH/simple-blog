@@ -35,7 +35,6 @@ public class AdminController {
     @PostMapping("/{id}")
     public ResponseEntity<?> blockUser(@PathVariable("id") final Long id) {
         userService.blockBy(id);
-
         return ResponseEntity.noContent().build();
     }
 

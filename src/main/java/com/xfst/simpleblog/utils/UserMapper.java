@@ -14,6 +14,9 @@ public class UserMapper {
        userDTO.setActive(userDAO.isActive());
        userDTO.setPosts(PostMapper.map(userDAO.getPosts()));
        userDTO.setUsername(userDAO.getUsername());
+       userDTO.setFirstName(userDAO.getFirstName());
+       userDTO.setLastName(userDAO.getLastName());
+       userDTO.setEmail(userDAO.getEmail());
        userDTO.setCreatedTime(userDAO.getCreatedTime());
        return userDTO;
     }

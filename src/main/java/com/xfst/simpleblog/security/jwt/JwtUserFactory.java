@@ -11,7 +11,8 @@ import java.util.stream.Collectors;
 
 public final class JwtUserFactory {
 
-    public JwtUserFactory() {
+    private JwtUserFactory() {
+        throw new UnsupportedOperationException();
     }
 
     public static JwtUser create(UserDAO user) {

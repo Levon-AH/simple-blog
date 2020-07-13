@@ -10,4 +10,8 @@ public interface UserService {
     UserDTO findBy(final String username);
 
     void blockBy(final Long id);
+
+    boolean existsByUsername(final String username);
+
+    boolean existsByEmail(final String email);
 }

@@ -35,7 +35,7 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostCreateResponse> post(@RequestBody @Valid final PostCreateRequest request,
-                                  Principal principal) {
+                                                   Principal principal) {
 
         UserDTO user = userService.findBy(principal.getName());
         PostDTO postDto = createPostDto(request, user);
@@ -46,11 +46,13 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<PostUpdateResponse> edit(@RequestBody @Valid final PostUpdateRequest request,
-                                  Principal principal) {
+                                                   @PathVariable("id") final Long id,
+                                                   Principal principal) {
         UserDTO user = userService.findBy(principal.getName());
         PostDTO postDto = createPostDto(request, user);
+        postDto.setId(id);
         PostDTO updated = postService.update(postDto);
         PostUpdateResponse response = new PostUpdateResponse();
         response.setPost(updated);
