@@ -35,11 +35,6 @@ public class JwtTokenProvider {
         return new BCryptPasswordEncoder();
     }
 
-    public static void main(String[] args) {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        System.out.println(bCryptPasswordEncoder.encode("password"));
-    }
-
     @PostConstruct
     protected void init() {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
@@ -84,12 +79,5 @@ public class JwtTokenProvider {
         } catch (JwtException | IllegalArgumentException e) {
             throw new JwtAuthenticationException("JWT token is expired or invalid");
         }
-    }
-
-    private Set<String> getRoleNames(Set<Role> userRoles) {
-        return userRoles.stream()
-                .filter(Objects::nonNull)
-                .map(Role::getName)
-                .collect(Collectors.toSet());
     }
 }
